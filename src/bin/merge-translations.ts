@@ -60,7 +60,8 @@ function merge () {
     })
 
     const output = path.join(outputDir, fileName)
-    fs.writeFileSync(output, JSON.stringify(baseJSON, undefined, 2), 'utf-8')
+
+    fs.appendFileSync(output, JSON.stringify(baseJSON, undefined, 2), 'utf-8')
 
     console.info('\x1b[32m%s\x1b[0m', 'successfully translated: ' + output)
   })
@@ -92,5 +93,15 @@ function onError (message: string): void {
     console.warn('\x1b[33m%s\x1b[0m', message)
   }
 }
+
+function cleanOutputDir () {
+  const files = getTranslationFiles(outputDir)
+  files.forEach(fileName => {
+    fs.unlinkSync(path.join(outputDir, fileName))
+  })
+  fs.rmdirSync(outputDir)
+}
+
+cleanOutputDir()
 
 merge()
