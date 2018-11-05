@@ -41,6 +41,7 @@ In alphabetic order:
 - `build-tsc-prod`: does `tsc -p tsconfig.prod.ts`
 - `clean-dist`: cleans up `dist` folder
 - `init-from-shared-module`: copied config files from `shared-module/cfg/init` to the project
+- `merge-translations`: Merges &lt;lang&gt;.json files into an output directory so translations keys from multiple projects can be accessed by one translation loader
 - `prettier-all`: runs Prettier as we want it: first `prettier` on needed paths, then `tslint` on top of it
 - `prettier-do`: runs just Prettier on needed paths
 - `test`: alias for `jest`. Automatically detects `full-icu` module presense, adds `NODE_ICU_DATA=${fullICUPath}` if needed!
