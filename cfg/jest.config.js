@@ -6,10 +6,10 @@
 const fs = require('fs-extra')
 const cwd = process.cwd()
 
-// Set 'setupTestFrameworkScriptFile' only if it exists
-const setupTestFrameworkScriptFile = fs.pathExistsSync(`${cwd}/src/test/setupJest.ts`)
-  ? '<rootDir>/src/test/setupJest.ts'
-  : undefined
+// Set 'setupFilesAfterEnv' only if it exists
+const setupFilesAfterEnv = fs.pathExistsSync(`${cwd}/src/test/setupJest.ts`)
+  ? ['<rootDir>/src/test/setupJest.ts']
+  : []
 
 const transformIgnore = ['@naturalcycles']
 
@@ -44,7 +44,7 @@ module.exports = {
   },
   testEnvironment: 'node',
   unmockedModulePathPatterns: [],
-  setupTestFrameworkScriptFile,
+  setupFilesAfterEnv,
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/index.ts',
