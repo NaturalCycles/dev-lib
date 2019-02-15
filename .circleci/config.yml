@@ -23,7 +23,7 @@ workflows:
           filters:
             branches:
               only:
-                - master2
+                - master3
                 - orbs
       - tools/test-lib-job
 
