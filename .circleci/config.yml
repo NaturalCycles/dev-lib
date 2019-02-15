@@ -6,84 +6,8 @@
 version: 2.1
 
 orbs:
-  naturalcycles:
-    commands:
-      hello:
-        description: hello descr
-        steps:
-          - run: 'echo Hello'
-
-      yarn_deps:
-        description: descr
-        steps:
-          - restore_cache_yarn
-          - run: yarn --frozen-lockfile
-          - save_cache_yarn
-
-      yarn_deps_lib:
-        description: descr
-        steps:
-          - restore_cache_yarn_lib
-          - run: yarn --pure-lockfile
-          - save_cache_yarn_lib
-
-      restore_cache_yarn:
-        description: descr
-        steps:
-          - restore_cache:
-              key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-v1-{{ checksum "yarn.lock" }}
-
-      save_cache_yarn:
-        description: descr
-        steps:
-          - save_cache:
-              paths:
-                - node_modules
-              key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-v1-{{ checksum "yarn.lock" }}
-
-      restore_cache_yarn_lib:
-        description: descr
-        steps:
-          - restore_cache:
-              key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-v1-{{ checksum "package.json" }}
-
-      save_cache_yarn_lib:
-        description: descr
-        steps:
-          - save_cache:
-              paths:
-                - node_modules
-              key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-v1-{{ checksum "package.json" }}
-
-      release_lib:
-        description: descr
-        steps:
-          - run:
-              name: Release (if needed)
-              command: yarn release
-
-      test_ci:
-        description: descr
-        steps:
-          - run:
-              name: Test
-              command: |
-                # todo: detect if CC_TEST_REPORTER_ID is defined
-                cc-test-reporter before-build
-                yarn test-ci
-                cc-test-reporter after-build -t lcov ./coverage/lcov.info
-
-      store_test_results:
-        description: descr
-        steps:
-          - store_test_results:
-              path: report
-          - store_artifacts:
-              path: report
-              destination: report
-          - store_artifacts:
-              path: coverage/lcov-report
-              destination: coverage
+  # tools: naturalcycles/tools@volatile
+  tools: naturalcycles/tools@dev:1
 
 #
 # Defaults
@@ -171,11 +95,10 @@ jobs:
           destination: report
 
   hello-job:
-    <<: *defaults
+    executor: tools/node
     steps:
       - checkout
-      - naturalcycles/hello
-      - naturalcycles/yarn_deps_lib
+      - tools/yarn_deps_lib
 
 #
 # Workflows
