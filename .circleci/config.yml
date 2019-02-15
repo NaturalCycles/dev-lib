@@ -13,20 +13,6 @@ orbs:
 # Jobs
 #
 jobs:
-  build-job:
-    executor: tools/node
-    steps:
-      - checkout
-
-      # yarn
-      - tools/install_yarn_deps_lib
-
-      # build
-      - run: yarn build-prod
-
-      # release
-      - tools/release_lib
-
   test-job:
     executor: tools/node
     environment:
@@ -71,7 +57,7 @@ workflows:
   version: 2
   default-workflow:
     jobs:
-      - build-job:
+      - tools/build-publish-lib-job:
           filters:
             branches:
               only:
