@@ -10,69 +10,43 @@ orbs:
   tools: naturalcycles/tools@dev:1
 
 #
-# Defaults
-#
-defaults: &defaults
-  resource_class: xlarge
-  docker:
-    - image: naturalcycles/ci-node:latest
-  working_directory: ~/repo
-
-restore_cache: &restore_cache
-  key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-v1-{{ checksum "package.json" }}
-
-save_cache: &save_cache
-  paths:
-    - node_modules
-  key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-v1-{{ checksum "package.json" }}
-
-test: &test
-  name: Test
-  command: |
-    cc-test-reporter before-build
-    yarn test-ci
-    cc-test-reporter after-build -t lcov ./coverage/lcov.info
-
-release: &release
-  name: Release (if needed)
-  command: yarn release
-
-#
 # Jobs
 #
 jobs:
   build-job:
-    <<: *defaults
+    executor: tools/node
+    steps:
+      - checkout
+
+      # yarn
+      - tools/install_yarn_deps_lib
+
+      # build
+      - run: yarn build-prod
+
+      # release
+      # - run: *release
+
+  test-job:
+    executor: tools/node
     environment:
       CC_TEST_REPORTER_ID: 791311fd4ab23bf9d0246fe1d1b4b589656a0de6d8a9a1a6d91a098b8816ea85
     steps:
       - checkout
 
       # yarn
-      - restore_cache: *restore_cache
-      - run: yarn --pure-lockfile
-      - save_cache: *save_cache
+      - tools/install_yarn_deps_lib
 
       # build
-      - run: yarn build-prod
+      - run: yarn build
 
       # test
-      - run: *test
+      - tools/test_ci
 
-      # release
-      - run: *release
-
-      - store_test_results:
-          path: report
-      - store_artifacts:
-          path: report
-          destination: report
-      - store_artifacts:
-          path: coverage/lcov-report
-          destination: coverage
+      - tools/store_test_artifacts
 
   nightly-job:
-    <<: *defaults
+    executor: tools/node
     steps:
       - checkout
 
@@ -88,17 +62,7 @@ jobs:
           command: |
             echo todo
 
-      - store_test_results:
-          path: report
-      - store_artifacts:
-          path: report
-          destination: report
-
-  hello-job:
-    executor: tools/node
-    steps:
-      - checkout
-      - tools/yarn_deps_lib
+      - tools/store_test_artifacts
 
 #
 # Workflows
@@ -110,8 +74,9 @@ workflows:
       - build-job:
           filters:
             branches:
-              only: master
-      - hello-job
+              only:
+                - master
+                - orbs
 
   nightly-workflow:
     triggers:
