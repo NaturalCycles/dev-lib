@@ -23,9 +23,10 @@ workflows:
           filters:
             branches:
               only:
-                - master3
+                - master
                 - orbs
-      - tools/test-lib-job
+      - tools/test-lib-job:
+          CC_TEST_REPORTER_ID: 791311fd4ab23bf9d0246fe1d1b4b589656a0de6d8a9a1a6d91a098b8816ea85
 
   nightly-workflow:
     triggers:
