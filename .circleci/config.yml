@@ -5,50 +5,12 @@
 
 version: 2.1
 
+#
+# Orbs
+#
 orbs:
   # tools: naturalcycles/tools@volatile
   tools: naturalcycles/tools@dev:1
-
-#
-# Jobs
-#
-jobs:
-  test-job:
-    executor: tools/node
-    environment:
-      CC_TEST_REPORTER_ID: 791311fd4ab23bf9d0246fe1d1b4b589656a0de6d8a9a1a6d91a098b8816ea85
-    steps:
-      - checkout
-
-      # yarn
-      - tools/install_yarn_deps_lib
-
-      # build
-      - run: yarn build
-
-      # test
-      - tools/test_ci
-
-      - tools/store_test_artifacts
-
-  nightly-job:
-    executor: tools/node
-    steps:
-      - checkout
-
-      # yarn (no cache)
-      - run: yarn --pure-lockfile
-
-      - run: yarn build
-      - run: yarn test-ci
-
-      - run:
-          name: Report failure
-          when: on_fail
-          command: |
-            echo todo
-
-      - tools/store_test_artifacts
 
 #
 # Workflows
@@ -63,7 +25,7 @@ workflows:
               only:
                 - master
                 - orbs
-      - test-job
+      - tools/test-lib-job
 
   nightly-workflow:
     triggers:
@@ -73,4 +35,4 @@ workflows:
             branches:
               only: master
     jobs:
-      - nightly-job
+      - tools/nightly-lib-job
