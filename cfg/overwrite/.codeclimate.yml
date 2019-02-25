@@ -47,7 +47,7 @@ exclude_patterns:
   - 'src/@linked/'
   - 'src/test/'
   - 'src/environments/'
-  - 'src/scripts/'
+  - 'src/env/'
   - 'scripts/'
   - 'other/'
   - 'patch/'

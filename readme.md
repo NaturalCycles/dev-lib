@@ -10,7 +10,7 @@
 
 ## How to use
 
-    yarn add -D @naturalcycles/shared-dev prettier ts-lint
+    yarn add -D @naturalcycles/shared-module prettier tslint
 
 This unlocks all commands listed below in "Yarn commands" section, e.g:
 
@@ -31,7 +31,7 @@ All files are linted and _prettified_ upon commit (using `husky`, `lint-staged` 
 - `/dist-cjs` target for CommonJS files
 - `/dist-esm` target for ES Modules
 - `/src` for all source files
-- `/src/scripts` or `/scripts` (experimental) for all non-production source files / scripts.
+- `/scripts` for all non-production source files / scripts.
 - `/src/test` for generic test-related files and utilities, integration tests.
 - `/src/test/mock`
 - `/src/test/integration` for integration tests (unit tests should be placed next to the file)
@@ -56,10 +56,12 @@ In alphabetic order:
 - `lint-all`: runs Prettier as we want it: first `prettier` on needed paths, then `tslint` on top of it
 - `prettier-do`: runs just Prettier on needed paths
 - `test`: alias for `jest`. Automatically detects `full-icu` module presense, adds `NODE_ICU_DATA=${fullICUPath}` if needed!
+  Automatically adds `--silent` if all tests are run.
 - `test-ci`: runs test in CI environment, with coverage. Includes fix for "CircleCI out of memory issue"
-- `test-compile`: runs `tsc` on `*.test.ts` files, ensures they can be compiled without error
 - `tslint-all`: runs `tslint` on needed paths
 - `tsn`: short alias for `ts-node -r tsconfig-paths/register`
+- `tsn-script`: like `tsn` but for running scripts inside `./scripts` folder, will use either `./scripts/tsconfig.json` (if present)
+  or `shared-module/scripts/tsconfig.json`
 - `update-from-shared-module`: copied config files from `shared-module/cfg/overwrite` to the project
 
 ## Non-extendable config files

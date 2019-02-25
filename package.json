@@ -1,9 +1,10 @@
 {
   "name": "@naturalcycles/shared-module",
-  "version": "1.8.0",
+  "version": "3.1.1",
   "description": "",
   "scripts": {
     "tsn": "ts-node",
+    "tsn-script": "yarn tsn ./src/bin/tsn-script.ts",
     "bt": "yarn build && yarn test",
     "build": "del ./dist && yarn build-copy && yarn build-tsc",
     "build-tsc": "yarn tsn ./src/bin/build-tsc.ts",
@@ -33,16 +34,16 @@
     "fs-extra": "^7.0.0",
     "husky": "^1.1.2",
     "lint-staged": "^8.0.4",
-    "yargs": "^12.0.2"
+    "yargs": "^13.2.0"
   },
   "devDependencies": {
     "@naturalcycles/semantic-release": "^1.0.0",
-    "@types/jest": "^23.3.5",
+    "@types/jest": "^24.0.6",
     "@types/node": "^10.11.7",
-    "jest": "^23.6.0",
+    "jest": "^24.1.0",
     "jest-junit": "^6.2.1",
     "prettier": "^1.14.3",
-    "ts-jest": "^23.10.4",
+    "ts-jest": "^24.0.0",
     "ts-node": "^8.0.2",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.18.0",
@@ -52,6 +53,7 @@
   "peerDependencies": {},
   "files": [
     "dist",
+    "scripts/tsconfig.json",
     "cfg"
   ],
   "bin": {
@@ -68,9 +70,9 @@
     "prettier-do": "dist/bin/prettier-do.js",
     "test": "dist/bin/test.js",
     "test-ci": "dist/bin/test-ci.js",
-    "test-compile": "dist/bin/test-compile.js",
     "tslint-all": "dist/bin/tslint-all.js",
     "tsn": "dist/bin/tsn.js",
+    "tsn-script": "dist/bin/tsn-script.js",
     "update-from-shared-module": "dist/bin/update-from-shared-module.js"
   },
   "engines": {
