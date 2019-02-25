@@ -1,6 +1,19 @@
 // formatting rules still have value that IDEs will infer their setting from them
 module.exports = {
+  rulesDirectory: ['tslint-plugin-prettier'],
   rules: {
+    prettier: [
+      true,
+      {
+        printWidth: 100,
+        tabWidth: 2,
+        useTabs: false,
+        semi: false,
+        singleQuote: true,
+        trailingComma: 'all',
+        bracketSpacing: true,
+      },
+    ],
     'adjacent-overload-signatures': true,
     'array-type': [true, 'array'],
     'arrow-parens': [true, 'ban-single-arg-parens'],
