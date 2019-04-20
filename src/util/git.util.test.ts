@@ -2,16 +2,16 @@ import {
   commitMessageToTitleMessage,
   getLastGitCommitMsg,
   gitCurrentBranchName,
-  gitHasUncommittedChanges
+  gitHasUncommittedChanges,
 } from './git.util'
 
 test('getLastGitCommitMsg', async () => {
   const msg = await getLastGitCommitMsg()
-  console.log({msg})
+  console.log({ msg })
   expect(msg).not.toBeUndefined()
 
   const title = commitMessageToTitleMessage(msg)
-  console.log({title})
+  console.log({ title })
   expect(title).not.toBeUndefined()
 })
 

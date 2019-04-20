@@ -1,12 +1,13 @@
+import * as yargs from 'yargs'
 import {
   commitMessageToTitleMessage,
   getLastGitCommitMsg,
   gitCommitAll,
-  gitHasUncommittedChanges, gitPush
+  gitHasUncommittedChanges,
+  gitPush,
 } from '../util/git.util'
 import { runPrettier } from '../util/prettier.util'
 import { tslintAllCommand } from './tslint-all.command'
-import * as yargs from 'yargs'
 
 /**
  * Due to "slowness issue" we run TSLint twice - first without project, secondly - with project.
@@ -16,7 +17,7 @@ import * as yargs from 'yargs'
  * We run TSLint separately for /src and /scripts dir, because they might have a different tsconfig.json file.
  */
 export async function lintAllCommand (): Promise<void> {
-  const {commitOnChanges, failOnChanges} = yargs.options({
+  const { commitOnChanges, failOnChanges } = yargs.options({
     commitOnChanges: {
       type: 'boolean',
       default: false,
@@ -24,7 +25,7 @@ export async function lintAllCommand (): Promise<void> {
     failOnChanges: {
       type: 'boolean',
       default: false,
-    }
+    },
   }).argv
 
   await tslintAllCommand()
@@ -35,7 +36,10 @@ export async function lintAllCommand (): Promise<void> {
     // detect changes
     const hasChanges = await gitHasUncommittedChanges()
     if (hasChanges) {
-      const msg = 'style(lint-all): ' + commitMessageToTitleMessage(await getLastGitCommitMsg()) + '\n\n[skip ci]'
+      const msg =
+        'style(lint-all): ' +
+        commitMessageToTitleMessage(await getLastGitCommitMsg()) +
+        '\n\n[skip ci]'
 
       // commit & push changes
       await gitCommitAll(msg)
