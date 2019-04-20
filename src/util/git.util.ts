@@ -1,4 +1,5 @@
 import * as execa from 'execa'
+import { logExec } from './exec.util'
 
 export async function getLastGitCommitMsg (): Promise<string> {
   // git log -1 --pretty=%B
@@ -41,8 +42,11 @@ export async function gitCommitAll (msg: string): Promise<boolean> {
     '-m',
     msg,
   ]
+
+  logExec(cmd, args)
   const {code} = await execa(cmd, args, {
     // shell: true,
+    stdio: 'inherit',
     reject: false,
   })
   console.log(`gitCommitAll code: ${code}`)
@@ -68,12 +72,30 @@ export async function gitPush (): Promise<void> {
     'push',
   ]
 
-  
+
   const { CIRCLE_BRANCH } = process.env
-  if (CIRCLE_BRANCH) {
-    args.push('--set-upstream', 'origin', CIRCLE_BRANCH)
+  const branchName = CIRCLE_BRANCH || await gitCurrentBranchName()
+
+  if (branchName) {
+    args.push('--set-upstream', 'origin', branchName)
   }
 
-  const { stdout } = await execa(cmd, args)
-  console.log(`gitPush: ${stdout}`)
+  logExec(cmd, args)
+  await execa(cmd, args, {
+    stdio: 'inherit',
+  })
+}
+
+export async function gitCurrentBranchName (): Promise<string> {
+  // git rev-parse --abbrev-ref HEAD
+  const cmd = 'git'
+  const args = [
+    'rev-parse',
+    '--abbrev-ref',
+    'HEAD',
+  ]
+
+  const { stdout: branchName } = await execa(cmd, args)
+  // console.log(`gitCurrentBranchName: ${branchName}`)
+  return branchName
 }
