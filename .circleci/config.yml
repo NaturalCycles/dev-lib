@@ -9,20 +9,6 @@ version: 2.1
 #
 orbs:
   tools: naturalcycles/tools@volatile
-  # tools: naturalcycles/tools@dev:1
-
-jobs:
-  snyk-job:
-    executor: tools/node
-    steps:
-      - tools/setup_node
-
-      - run:
-          name: snyk test
-          command: |
-            npm i -g snyk
-            snyk config set api=$SNYK_TOKEN
-            snyk test
 
 #
 # Workflows
@@ -39,7 +25,6 @@ workflows:
       - tools/test-job:
           CC_TEST_REPORTER_ID: 791311fd4ab23bf9d0246fe1d1b4b589656a0de6d8a9a1a6d91a098b8816ea85
       - tools/test-leaks-job
-      - snyk-job
 
   nightly-workflow:
     triggers:
@@ -51,3 +36,4 @@ workflows:
     jobs:
       - tools/nightly-job
       - tools/test-leaks-job
+      - tools/snyk-job
