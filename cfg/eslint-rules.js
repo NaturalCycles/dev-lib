@@ -309,7 +309,13 @@ module.exports = {
       },
     ],
     'no-unused-vars': 0, // replaced by `unused-imports/no-unused-vars`
-    '@typescript-eslint/no-unused-vars': [2],
+    '@typescript-eslint/no-unused-vars': [
+      0, // replaced by `unused-imports/no-unused-vars`
+      {
+        varsIgnorePattern: '^_',
+        argsIgnorePattern: '^_',
+      },
+    ],
     // unused-imports/* rules are replaced by biome
     // 'unused-imports/no-unused-imports': 2,
     // 'unused-imports/no-unused-vars': [
